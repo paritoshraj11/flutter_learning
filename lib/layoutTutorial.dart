@@ -1,6 +1,26 @@
 import "package:flutter/material.dart";
 
-class LayoutExample extends StatelessWidget {
+class LayoutExample extends StatefulWidget {
+  @override
+  _LayoutExample createState() => _LayoutExample();
+}
+
+class _LayoutExample extends State<LayoutExample> {
+  bool _isFavourite = false;
+  int _favouriteCount = 41;
+
+  void toggleFaviourate() {
+    setState(() {
+      if (_isFavourite) {
+        _favouriteCount = _favouriteCount - 1;
+        _isFavourite = false;
+      } else {
+        _favouriteCount = _favouriteCount + 1;
+        _isFavourite = true;
+      }
+    });
+  }
+
   Widget title() {
     return Container(
       padding: EdgeInsets.all(32),
@@ -24,8 +44,12 @@ class LayoutExample extends StatelessWidget {
               ],
             ),
           ),
-          Icon(Icons.star, color: Colors.red),
-          Text("41")
+          IconButton(
+            icon: Icon(_isFavourite ? Icons.star : Icons.star_border),
+            color: Colors.red,
+            onPressed: toggleFaviourate,
+          ),
+          Text("$_favouriteCount")
         ],
       ),
     );

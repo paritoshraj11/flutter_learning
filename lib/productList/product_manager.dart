@@ -39,7 +39,8 @@ class _ProductManager extends State<ProductManager> {
           Container(
             margin: EdgeInsets.only(top: 10),
             child: RaisedButton(
-              child: Text("Add Product"),
+              color: Theme.of(context).primaryColor,
+              child: Text("Add Product", style: TextStyle(color: Colors.white)),
               onPressed: () {
                 setState(() {
                   _products.add(

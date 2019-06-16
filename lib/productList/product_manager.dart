@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import "./products.dart";
 
 class ProductManager extends StatefulWidget {
-  final String startingProduct;
+  final Map<String, String> startingProduct;
   ProductManager({this.startingProduct});
   @override
   State<StatefulWidget> createState() {
-    print("[product Manager] :: create state");
     return _ProductManager();
   }
 }
 
 class _ProductManager extends State<ProductManager> {
-  List<String> _products = [];
+  List<Map<String, String>> _products = [];
   /*
   ** in class which extends  State class is able to acsess all
   property of statefull widget with special object widget.property name;
@@ -43,7 +42,8 @@ class _ProductManager extends State<ProductManager> {
               child: Text("Add Product"),
               onPressed: () {
                 setState(() {
-                  _products.add("Food 1");
+                  _products.add(
+                      {"title": "Healthy food", "image": "assets/food.jpg"});
                 });
               },
             ),

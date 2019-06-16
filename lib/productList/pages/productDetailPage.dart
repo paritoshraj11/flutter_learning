@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 
 class ProductDetailPage extends StatelessWidget {
+  final Map<String, String> product;
+  ProductDetailPage(this.product);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class ProductDetailPage extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: Image.asset(
-                  "assets/food.jpg",
+                  product["image"],
                   fit: BoxFit.fill,
                 ),
               )
@@ -21,7 +23,7 @@ class ProductDetailPage extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.all(10),
-            child: Text("This is Detail page"),
+            child: Text(product["title"]),
           )
         ],
       ),

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import "./product_manager.dart";
-import "./layoutTutorial.dart";
+import "./productList/pages/homePage.dart";
+// import "./layoutTutorial.dart";
+//import "./networkRequest.dart";
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-      appBar: AppBar(title: Text("EasyList")),
-      body: LayoutExample(),
-      // body: ProductManager("Food tester !!")
-    ));
+    return MaterialApp(home: HomePage());
   }
 }

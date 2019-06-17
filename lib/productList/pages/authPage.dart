@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "./productPage.dart";
 
 class Auth extends StatelessWidget {
   @override
@@ -13,10 +12,8 @@ class Auth extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                 )),
-            onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => ProductsPage())),
+            onPressed: () =>
+                Navigator.pushReplacementNamed(context, "/products"),
           ),
         ),
       ),

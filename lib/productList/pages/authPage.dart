@@ -13,8 +13,10 @@ class Auth extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.white,
                 )),
-            onPressed: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => ProductsPage())),
+            onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => ProductsPage())),
           ),
         ),
       ),

@@ -22,11 +22,8 @@ class Products extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: Text("Detail Page"),
-                  onPressed: () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProductDetailPage(products[index])))
+                  onPressed: () =>
+                      Navigator.pushNamed(context, "/product-detail/$index")
                           .then((value) {
                         print("value :: $value");
                       }),

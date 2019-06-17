@@ -1,6 +1,4 @@
 import "package:flutter/material.dart";
-import "./pages/manageProductPage.dart";
-import "./pages/productPage.dart";
 
 class CustomAppBar extends StatelessWidget {
   @override
@@ -20,10 +18,8 @@ class CustomAppBar extends StatelessWidget {
           ListTile(
             title: Text("Manage Product"),
             leading: Icon(Icons.settings),
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => ManageProduct())),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, "/admin-product"),
           )
         ],
       ),

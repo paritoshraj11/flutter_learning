@@ -15,10 +15,7 @@ class CustomAppBar extends StatelessWidget {
           ListTile(
             title: Text("Product List"),
             leading: Icon(Icons.list),
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => ProductsPage())),
+            onTap: () => Navigator.pushReplacementNamed(context, "/products"),
           ),
           ListTile(
             title: Text("Manage Product"),

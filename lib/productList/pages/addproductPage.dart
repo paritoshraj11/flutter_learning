@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 
 class AddProduct extends StatefulWidget {
+  final Function addProduct;
+  AddProduct(this.addProduct);
   @override
   State<StatefulWidget> createState() {
     return _AddProduct();
@@ -28,6 +30,16 @@ class _AddProduct extends State<AddProduct> {
     setState(() {
       price = double.parse(value);
     });
+  }
+
+  _onSave() {
+    final Map<String, dynamic> product = {
+      "title": title,
+      "description": description,
+      "price": price,
+      "image": "assets/food.jpg"
+    };
+    widget.addProduct(product);
   }
 
   @override
@@ -74,7 +86,7 @@ class _AddProduct extends State<AddProduct> {
                     )
                   ],
                 ),
-                onPressed: () {}),
+                onPressed: _onSave),
           )
         ],
       ),

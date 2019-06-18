@@ -14,9 +14,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
-  List<Map<String, String>> _products = [];
+  List<Map<String, dynamic>> _products = [];
 
-  _addProduct(Map<String, String> product) {
+  _addProduct(Map<String, dynamic> product) {
     setState(() {
       _products.add(product);
     });
@@ -35,8 +35,9 @@ class _MyApp extends State<MyApp> {
         "/": (BuildContext context) =>
             Auth(), //it is default route of the application.
         "/products": (BuildContext context) =>
-            ProductsPage(_products, _addProduct, _removeProduct),
-        "/admin-product": (BuildContext context) => ManageProduct()
+            ProductsPage(_products),
+        "/admin-product": (BuildContext context) =>
+            ManageProduct(_products, _addProduct, _removeProduct)
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split("/");

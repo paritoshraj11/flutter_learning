@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import "package:async/async.dart";
 
 class ProductDetailPage extends StatelessWidget {
-  final Map<String, String> product;
+  final Map<String, dynamic> product;
   ProductDetailPage(this.product);
 
   _showDialog(BuildContext context) {
@@ -29,7 +29,6 @@ class ProductDetailPage extends StatelessWidget {
             ],
           );
         }).then((value) {
-      print("123456789045678 $value");
     });
   }
 

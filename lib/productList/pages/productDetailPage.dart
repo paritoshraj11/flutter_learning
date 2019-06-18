@@ -5,6 +5,34 @@ import "package:async/async.dart";
 class ProductDetailPage extends StatelessWidget {
   final Map<String, String> product;
   ProductDetailPage(this.product);
+
+  _showDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Are you Sure ?"),
+            content: Text("This will not remove!"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Confirm"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              FlatButton(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              )
+            ],
+          );
+        }).then((value) {
+      print("123456789045678 $value");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -35,9 +63,7 @@ class ProductDetailPage extends StatelessWidget {
               Container(
                 child: RaisedButton(
                   child: Text("Delete"),
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
+                  onPressed: () => _showDialog(context),
                 ),
               )
             ],

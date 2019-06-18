@@ -40,6 +40,7 @@ class _AddProduct extends State<AddProduct> {
       "image": "assets/food.jpg"
     };
     widget.addProduct(product);
+    Navigator.popAndPushNamed(context, "/products");
   }
 
   @override

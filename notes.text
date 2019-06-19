@@ -6,3 +6,21 @@
 
 Need to work with application to learn 
 ** https://codelabs.developers.google.com/codelabs/flutter-cupertino/#0
+
+special widget:
+
+w-> stand for widget
+p-> statnd for properties of widget
+
+for spacing : 
+widget : is 
+    w-> Container 
+        p->  padding :
+        p->  margin :
+    w-> SizedBox
+        p-> height
+    w-> Padding 
+        p-> paddding  
+    * paddig and margin take value form EdgeInsets.all, EdgeInsets.onle, EdgeInsets.symentric
+
+

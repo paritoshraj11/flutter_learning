@@ -24,3 +24,12 @@ widget : is
     * paddig and margin take value form EdgeInsets.all, EdgeInsets.onle, EdgeInsets.symentric
 
 
+
+to expand children in main axis direction of row and column 
+
+widget : is  
+    w-> Expandble()   // it expand childern to avail all available size
+    w-> Flexible ()   // it is somewhere beetween expanded and and its available sized 
+
+
+

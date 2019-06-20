@@ -55,13 +55,18 @@ class Products extends StatelessWidget {
             ButtonBar(
               alignment: MainAxisAlignment.center,
               children: <Widget>[
-                FlatButton(
-                  child: Text("Detail Page"),
+                IconButton(
+                  icon: Icon(Icons.info),
                   onPressed: () =>
                       Navigator.pushNamed(context, "/product-detail/$index")
                           .then((value) {
-                        print("value :: $value");
+                        print(value);
                       }),
+                ),
+                IconButton(
+                  color: Theme.of(context).primaryColor,
+                  icon: Icon(Icons.favorite_border),
+                  onPressed: () {},
                 )
               ],
             )

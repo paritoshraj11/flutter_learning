@@ -10,7 +10,15 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomAppBar(),
-      appBar: AppBar(title: Text("Tastey Food")),
+      appBar: AppBar(
+        title: Text("Tastey Food"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: ProductManager(products),
     );
   }

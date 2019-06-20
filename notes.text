@@ -34,4 +34,11 @@ widget : is
     w-> Flexible ()   // it is somewhere beetween expanded and and its available sized 
 
 
+** to apply gesture event like opTap , onDoubleTap we can use 
+ 
+ widget : is
+   w -> GestureControler
+       
+
+
 

@@ -45,9 +45,14 @@ class _AddProduct extends State<AddProduct> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWidth = deviceWidth > 550 ? 500 : deviceWidth;
+    final double targetPadding = deviceWidth - targetWidth;
     return Container(
       padding: EdgeInsets.all(15.0),
+      width: 100,
       child: ListView(
+        padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
         children: <Widget>[
           TextField(
             decoration: InputDecoration(

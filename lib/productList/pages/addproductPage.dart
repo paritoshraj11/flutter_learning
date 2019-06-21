@@ -2,7 +2,10 @@ import "package:flutter/material.dart";
 
 class AddProduct extends StatefulWidget {
   final Function addProduct;
-  AddProduct({this.addProduct});
+  final Function updateProduct;
+  final Map<String, dynamic> product;
+  final int index;
+  AddProduct({this.addProduct, this.updateProduct, this.product, this.index});
   @override
   State<StatefulWidget> createState() {
     return _AddProduct();
@@ -35,7 +38,11 @@ class _AddProduct extends State<AddProduct> {
       return;
     }
     _formKey.currentState.save();
-    widget.addProduct(_formData);
+    if (widget.product != null) {
+      widget.updateProduct(widget.index, _formData);
+    } else {
+      widget.addProduct(_formData);
+    }
     Navigator.popAndPushNamed(context, "/products");
   }
 
@@ -44,7 +51,7 @@ class _AddProduct extends State<AddProduct> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550 ? 500 : deviceWidth;
     final double targetPadding = deviceWidth - targetWidth;
-    return GestureDetector(
+    final Widget pageContent = GestureDetector(
       child: Container(
           padding: EdgeInsets.all(15.0),
           width: 100,
@@ -105,5 +112,13 @@ class _AddProduct extends State<AddProduct> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
     );
+
+    return widget.product == null
+        ? pageContent
+        : Scaffold(
+            appBar: AppBar(
+              title: Text("Edit Product"),
+            ),
+            body: pageContent);
   }
 }

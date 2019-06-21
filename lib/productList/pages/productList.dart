@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import 'package:flutter/widgets.dart';
+import "./addproductPage.dart";
 
 class Avatar extends StatelessWidget {
   final String imageAsset;
@@ -31,7 +33,14 @@ class ProductList extends StatelessWidget {
         title: Text(product["title"]),
         trailing: IconButton(
           icon: Icon(Icons.edit),
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => AddProduct(
+                        index: index,
+                        product: product,
+                        updateProduct: updateProduct,
+                      ))),
         ),
       ),
     );

@@ -7,7 +7,9 @@ class ManageProduct extends StatelessWidget {
   final List<Map<String, dynamic>> products;
   final Function addProduct;
   final Function removeProduct;
-  ManageProduct(this.products, this.addProduct, this.removeProduct);
+  final Function updateProduct;
+  ManageProduct(
+      this.products, this.addProduct, this.removeProduct, this.updateProduct);
   _tabs() {
     return TabBar(
       tabs: <Widget>[
@@ -25,7 +27,12 @@ class ManageProduct extends StatelessWidget {
 
   _tabsView() {
     return TabBarView(
-      children: <Widget>[AddProduct(this.addProduct), ProductList()],
+      children: <Widget>[
+        AddProduct(
+          addProduct: this.addProduct,
+        ),
+        ProductList(products: this.products, updateProduct: this.updateProduct)
+      ],
     );
   }
 

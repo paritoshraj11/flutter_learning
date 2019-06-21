@@ -26,6 +26,12 @@ class _MyApp extends State<MyApp> {
     });
   }
 
+  _updateProduct(int index, Map<String, dynamic> product) {
+    setState(() {
+      _products[index] = product;
+    });
+  }
+
   _removeProduct(int index) {
     print("remove this product");
   }
@@ -40,7 +46,7 @@ class _MyApp extends State<MyApp> {
             Auth(), //it is default route of the application.
         "/products": (BuildContext context) => ProductsPage(_products),
         "/admin-product": (BuildContext context) =>
-            ManageProduct(_products, _addProduct, _removeProduct)
+            ManageProduct(_products, _addProduct, _removeProduct, _updateProduct)
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split("/");

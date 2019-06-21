@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 
 class AddProduct extends StatefulWidget {
   final Function addProduct;
-  AddProduct(this.addProduct);
+  AddProduct({this.addProduct});
   @override
   State<StatefulWidget> createState() {
     return _AddProduct();

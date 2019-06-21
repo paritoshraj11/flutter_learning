@@ -10,27 +10,24 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProduct extends State<AddProduct> {
-  String title = "";
-  String description = "";
-  double price = 0.0;
+  final Map<String, dynamic> _formData = {
+    "title": null,
+    "description": null,
+    "price": null,
+    "image": "assets/food.jpg"
+  };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   _onTiteChange(String value) {
-    setState(() {
-      title = value;
-    });
+    _formData["title"] = value;
   }
 
   _onDescriptionChange(String value) {
-    setState(() {
-      description = value;
-    });
+    _formData["descriptiom"] = value;
   }
 
   _onPriceChange(String value) {
-    setState(() {
-      price = double.parse(value);
-    });
+    _formData["price"] = value;
   }
 
   _onSave() {
@@ -38,13 +35,7 @@ class _AddProduct extends State<AddProduct> {
       return;
     }
     _formKey.currentState.save();
-    final Map<String, dynamic> product = {
-      "title": title,
-      "description": description,
-      "price": price,
-      "image": "assets/food.jpg"
-    };
-    widget.addProduct(product);
+    widget.addProduct(_formData);
     Navigator.popAndPushNamed(context, "/products");
   }
 
@@ -79,14 +70,12 @@ class _AddProduct extends State<AddProduct> {
                       labelText: "Description", icon: Icon(Icons.description)),
                   maxLines: 4,
                   onSaved: _onDescriptionChange,
-                  //onChanged: _onDescriptionChange,
                 ),
                 TextFormField(
                   decoration: InputDecoration(
                       labelText: "Price", icon: Icon(Icons.monetization_on)),
                   keyboardType: TextInputType.number,
                   onSaved: _onPriceChange,
-                  // onChanged: _onPriceChange,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
@@ -113,7 +102,6 @@ class _AddProduct extends State<AddProduct> {
             ),
           )),
       onTap: () {
-        print("on tap called !!!!!");
         FocusScope.of(context).requestFocus(FocusNode());
       },
     );

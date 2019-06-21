@@ -46,6 +46,10 @@ class _AddProduct extends State<AddProduct> {
     Navigator.popAndPushNamed(context, "/products");
   }
 
+  _getInitialValue(String key) {
+    return widget.product != null ? widget.product[key] : "";
+  }
+
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -64,6 +68,7 @@ class _AddProduct extends State<AddProduct> {
                     labelText: "Title",
                     icon: Icon(Icons.title),
                   ),
+                  initialValue: _getInitialValue("title"),
                   onSaved: _onTiteChange,
                   validator: (value) {
                     if (value.isEmpty) {
@@ -76,12 +81,14 @@ class _AddProduct extends State<AddProduct> {
                       labelText: "Description", icon: Icon(Icons.description)),
                   maxLines: 4,
                   onSaved: _onDescriptionChange,
+                  initialValue: _getInitialValue("description"),
                 ),
                 TextFormField(
                   decoration: InputDecoration(
                       labelText: "Price", icon: Icon(Icons.monetization_on)),
                   keyboardType: TextInputType.number,
                   onSaved: _onPriceChange,
+                  initialValue: _getInitialValue("price").toString(),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20),

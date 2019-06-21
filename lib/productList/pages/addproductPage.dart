@@ -54,7 +54,6 @@ class _AddProduct extends State<AddProduct> {
     final Widget pageContent = GestureDetector(
       child: Container(
           padding: EdgeInsets.all(15.0),
-          width: 100,
           child: Form(
             key: _formKey,
             child: ListView(

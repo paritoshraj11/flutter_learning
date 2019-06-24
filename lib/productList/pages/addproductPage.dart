@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "../../helper/ensure_visible.dart";
 
 class AddProduct extends StatefulWidget {
   final Function addProduct;
@@ -19,6 +20,9 @@ class _AddProduct extends State<AddProduct> {
     "price": null,
     "image": "assets/food.jpg"
   };
+  final titleFocusNode = FocusNode();
+  final descriptionFocusNode = FocusNode();
+  final priceFocusNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   _onTiteChange(String value) {
@@ -63,32 +67,44 @@ class _AddProduct extends State<AddProduct> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
               children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Title",
-                    icon: Icon(Icons.title),
+                EnsureVisibleWhenFocused(
+                    focusNode: titleFocusNode,
+                    child: TextFormField(
+                      focusNode: titleFocusNode,
+                      decoration: InputDecoration(
+                        labelText: "Title",
+                        icon: Icon(Icons.title),
+                      ),
+                      initialValue: _getInitialValue("title"),
+                      onSaved: _onTiteChange,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Title is required";
+                        }
+                      },
+                    )),
+                EnsureVisibleWhenFocused(
+                  focusNode: descriptionFocusNode,
+                  child: TextFormField(
+                    focusNode: descriptionFocusNode,
+                    decoration: InputDecoration(
+                        labelText: "Description",
+                        icon: Icon(Icons.description)),
+                    maxLines: 4,
+                    onSaved: _onDescriptionChange,
+                    initialValue: _getInitialValue("description"),
                   ),
-                  initialValue: _getInitialValue("title"),
-                  onSaved: _onTiteChange,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Title is required";
-                    }
-                  },
                 ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Description", icon: Icon(Icons.description)),
-                  maxLines: 4,
-                  onSaved: _onDescriptionChange,
-                  initialValue: _getInitialValue("description"),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                      labelText: "Price", icon: Icon(Icons.monetization_on)),
-                  keyboardType: TextInputType.number,
-                  onSaved: _onPriceChange,
-                  initialValue: _getInitialValue("price").toString(),
+                EnsureVisibleWhenFocused(
+                  child: TextFormField(
+                    focusNode: priceFocusNode,
+                    decoration: InputDecoration(
+                        labelText: "Price", icon: Icon(Icons.monetization_on)),
+                    keyboardType: TextInputType.number,
+                    onSaved: _onPriceChange,
+                    initialValue: _getInitialValue("price").toString(),
+                  ),
+                  focusNode: priceFocusNode,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20),

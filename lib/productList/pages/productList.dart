@@ -29,6 +29,42 @@ class ProductList extends StatelessWidget {
       this.removeProduct,
       this.insertProduct});
 
+  _onDismissed(BuildContext context, DismissDirection direction,
+      Map<String, dynamic> product, int index) {
+    print(direction);
+    if (direction == DismissDirection.endToStart) {
+      removeProduct(index);
+      print("dismissed start to end");
+      final snackBar = SnackBar(
+        content: Text("${product["title"]} has been deleted!"),
+        backgroundColor: Theme.of(context).primaryColor,
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: "Undo",
+          onPressed: () {
+            insertProduct(product, index);
+          },
+        ),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Widget _buildDeleteOption(
+      BuildContext context, Map<String, dynamic> product, int index) {
+    return IconButton(
+      icon: Icon(Icons.edit),
+      onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => AddProduct(
+                    index: index,
+                    product: product,
+                    updateProduct: updateProduct,
+                  ))),
+    );
+  }
+
   Widget _itemBuilder(BuildContext context, int index) {
     final Map<String, dynamic> product = products[index];
     return Dismissible(
@@ -36,25 +72,9 @@ class ProductList extends StatelessWidget {
       background: Container(
         color: Colors.red,
       ),
-      onDismissed: (DismissDirection direction) {
-        print(direction);
-        if (direction == DismissDirection.endToStart) {
-          removeProduct(index);
-          print("dismissed start to end");
-          final snackBar = SnackBar(
-            content: Text("${product["title"]} has been deleted!"),
-            backgroundColor: Theme.of(context).primaryColor,
-            action: SnackBarAction(
-              textColor: Colors.white,
-              label: "Undo",
-              onPressed: () {
-                insertProduct(product, index);
-              },
-            ),
-          );
-          Scaffold.of(context).showSnackBar(snackBar);
-        }
-      },
+      onDismissed: (DismissDirection direction) =>
+          _onDismissed(context, direction, product, index),
+
       child: Card(
         child: ListTile(
           // contentPadding: EdgeInsets.all(20),
@@ -62,17 +82,7 @@ class ProductList extends StatelessWidget {
           //leading: Image.asset(product["image"]),
           title: Text(product["title"]),
           subtitle: Text("₹ ${product["price"].toString()}"),
-          trailing: IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => AddProduct(
-                          index: index,
-                          product: product,
-                          updateProduct: updateProduct,
-                        ))),
-          ),
+          trailing: _buildDeleteOption(context, product, index),
         ),
       ),
     );

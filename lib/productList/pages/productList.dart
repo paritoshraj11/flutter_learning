@@ -42,8 +42,10 @@ class ProductList extends StatelessWidget {
           removeProduct(index);
           print("dismissed start to end");
           final snackBar = SnackBar(
-            content: Text("yahooo"),
+            content: Text("${product["title"]} has been deleted!"),
+            backgroundColor: Theme.of(context).primaryColor,
             action: SnackBarAction(
+              textColor: Colors.white,
               label: "Undo",
               onPressed: () {
                 insertProduct(product, index);

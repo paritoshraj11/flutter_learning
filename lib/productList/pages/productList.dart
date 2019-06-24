@@ -21,26 +21,56 @@ class Avatar extends StatelessWidget {
 class ProductList extends StatelessWidget {
   final List<Map<String, dynamic>> products;
   final Function updateProduct;
-  ProductList({this.products, this.updateProduct});
+  final Function removeProduct;
+  final Function insertProduct;
+  ProductList(
+      {this.products,
+      this.updateProduct,
+      this.removeProduct,
+      this.insertProduct});
 
   Widget _itemBuilder(BuildContext context, int index) {
     final Map<String, dynamic> product = products[index];
-    return Card(
-      child: ListTile(
-        contentPadding: EdgeInsets.all(20),
-        leading: Avatar(product["image"]),
-        //leading: Image.asset(product["image"]),
-        title: Text(product["title"]),
-        trailing: IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => AddProduct(
-                        index: index,
-                        product: product,
-                        updateProduct: updateProduct,
-                      ))),
+    return Dismissible(
+      key: Key(product["title"]), //this must be unique
+      background: Container(
+        color: Colors.red,
+      ),
+      onDismissed: (DismissDirection direction) {
+        print(direction);
+        if (direction == DismissDirection.endToStart) {
+          removeProduct(index);
+          print("dismissed start to end");
+          final snackBar = SnackBar(
+            content: Text("yahooo"),
+            action: SnackBarAction(
+              label: "Undo",
+              onPressed: () {
+                insertProduct(product, index);
+              },
+            ),
+          );
+          Scaffold.of(context).showSnackBar(snackBar);
+        }
+      },
+      child: Card(
+        child: ListTile(
+          // contentPadding: EdgeInsets.all(20),
+          leading: Avatar(product["image"]),
+          //leading: Image.asset(product["image"]),
+          title: Text(product["title"]),
+          subtitle: Text("₹ ${product["price"].toString()}"),
+          trailing: IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => AddProduct(
+                          index: index,
+                          product: product,
+                          updateProduct: updateProduct,
+                        ))),
+          ),
         ),
       ),
     );

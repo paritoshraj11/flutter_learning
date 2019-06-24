@@ -8,8 +8,9 @@ class ManageProduct extends StatelessWidget {
   final Function addProduct;
   final Function removeProduct;
   final Function updateProduct;
+  final Function insertProduct;
   ManageProduct(
-      this.products, this.addProduct, this.removeProduct, this.updateProduct);
+      this.products, this.addProduct, this.removeProduct, this.updateProduct, this.insertProduct);
   _tabs() {
     return TabBar(
       tabs: <Widget>[
@@ -31,7 +32,7 @@ class ManageProduct extends StatelessWidget {
         AddProduct(
           addProduct: this.addProduct,
         ),
-        ProductList(products: this.products, updateProduct: this.updateProduct)
+        ProductList(products: this.products, updateProduct: this.updateProduct, removeProduct:this.removeProduct, insertProduct:this.insertProduct)
       ],
     );
   }

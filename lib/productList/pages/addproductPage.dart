@@ -1,10 +1,11 @@
 import "package:flutter/material.dart";
 import "../../helper/ensure_visible.dart";
+import "../../model/product.dart";
 
 class AddProduct extends StatefulWidget {
   final Function addProduct;
   final Function updateProduct;
-  final Map<String, dynamic> product;
+  final Product product;
   final int index;
   AddProduct({this.addProduct, this.updateProduct, this.product, this.index});
   @override
@@ -30,7 +31,7 @@ class _AddProduct extends State<AddProduct> {
   }
 
   _onDescriptionChange(String value) {
-    _formData["descriptiom"] = value;
+    _formData["description"] = value;
   }
 
   _onPriceChange(String value) {
@@ -42,16 +43,32 @@ class _AddProduct extends State<AddProduct> {
       return;
     }
     _formKey.currentState.save();
+    final Product product = Product(
+        title: _formData["title"],
+        price: double.parse(_formData["price"]),
+        description: _formData["description"],
+        image: _formData["image"]);
     if (widget.product != null) {
-      widget.updateProduct(widget.index, _formData);
+      widget.updateProduct(widget.index, product);
     } else {
-      widget.addProduct(_formData);
+      widget.addProduct(product);
     }
     Navigator.popAndPushNamed(context, "/products");
   }
 
   _getInitialValue(String key) {
-    return widget.product != null ? widget.product[key] : "";
+    switch (key) {
+      case "title":
+        return widget.product != null ? widget.product.title : "";
+      case "description":
+        return widget.product != null ? widget.product.description : "";
+      case "image":
+        return widget.product != null ? widget.product.image : "";
+      case "price":
+        return widget.product != null ? widget.product.price : "";
+      default:
+        return "";
+    }
   }
 
   @override

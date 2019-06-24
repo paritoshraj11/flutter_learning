@@ -1,9 +1,10 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import "./pages/productDetailPage.dart";
+import "../model/product.dart";
 
 class Products extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
   Products(this.products);
 
   Widget _listItem(BuildContext context, int index) {
@@ -14,7 +15,7 @@ class Products extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Image.asset(
-                products[index]["image"],
+                products[index].image,
               ),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
@@ -25,7 +26,7 @@ class Products extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          products[index]["title"],
+                          products[index].title,
                           style: TextStyle(
                               fontFamily: "Oswald",
                               fontSize: 26,
@@ -41,7 +42,7 @@ class Products extends StatelessWidget {
                               borderRadius: BorderRadius.circular(5),
                               color: Theme.of(context).accentColor),
                           child: Text(
-                            '₹ ${products[index]["price"].toString()}',
+                            '₹ ${products[index].price.toString()}',
                             style: TextStyle(color: Colors.white),
                           ),
                         )

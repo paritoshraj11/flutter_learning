@@ -4,6 +4,7 @@ import "./productList/pages/authPage.dart";
 import "./productList/pages/productPage.dart";
 import "./productList/pages/productDetailPage.dart";
 import "./productList/pages/manageProductPage.dart";
+import "./model/product.dart";
 
 void main() {
   //debugPaintSizeEnabled = true;
@@ -18,21 +19,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
-  List<Map<String, dynamic>> _products = [];
+  List<Product> _products = [];
 
-  _addProduct(Map<String, dynamic> product) {
+  _addProduct(Product product) {
     setState(() {
       _products.add(product);
     });
   }
 
-  _insertProduct(Map<String, dynamic> product, index) {
+  _insertProduct(Product product, index) {
     setState(() {
       _products.insert(index, product);
     });
   }
 
-  _updateProduct(int index, Map<String, dynamic> product) {
+  _updateProduct(int index, Product product) {
     setState(() {
       _products[index] = product;
     });

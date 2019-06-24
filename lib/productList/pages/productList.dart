@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import "./addproductPage.dart";
+import "../../model/product.dart";
 
 class Avatar extends StatelessWidget {
   final String imageAsset;
@@ -19,7 +20,7 @@ class Avatar extends StatelessWidget {
 }
 
 class ProductList extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
   final Function updateProduct;
   final Function removeProduct;
   final Function insertProduct;
@@ -30,13 +31,13 @@ class ProductList extends StatelessWidget {
       this.insertProduct});
 
   _onDismissed(BuildContext context, DismissDirection direction,
-      Map<String, dynamic> product, int index) {
+      Product product, int index) {
     print(direction);
     if (direction == DismissDirection.endToStart) {
       removeProduct(index);
       print("dismissed start to end");
       final snackBar = SnackBar(
-        content: Text("${product["title"]} has been deleted!"),
+        content: Text("${product.title} has been deleted!"),
         backgroundColor: Theme.of(context).primaryColor,
         action: SnackBarAction(
           textColor: Colors.white,
@@ -50,8 +51,7 @@ class ProductList extends StatelessWidget {
     }
   }
 
-  Widget _buildDeleteOption(
-      BuildContext context, Map<String, dynamic> product, int index) {
+  Widget _buildDeleteOption(BuildContext context, Product product, int index) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () => Navigator.push(
@@ -66,9 +66,9 @@ class ProductList extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    final Map<String, dynamic> product = products[index];
+    final Product product = products[index];
     return Dismissible(
-      key: Key(product["title"]), //this must be unique
+      key: Key(product.title), //this must be unique
       background: Container(
         color: Colors.red,
       ),
@@ -78,10 +78,10 @@ class ProductList extends StatelessWidget {
       child: Card(
         child: ListTile(
           // contentPadding: EdgeInsets.all(20),
-          leading: Avatar(product["image"]),
+          leading: Avatar(product.image),
           //leading: Image.asset(product["image"]),
-          title: Text(product["title"]),
-          subtitle: Text("₹ ${product["price"].toString()}"),
+          title: Text(product.title),
+          subtitle: Text("₹ ${product.price.toString()}"),
           trailing: _buildDeleteOption(context, product, index),
         ),
       ),

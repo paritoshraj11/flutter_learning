@@ -1,9 +1,10 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
 import "package:async/async.dart";
+import "../../model/product.dart";
 
 class ProductDetailPage extends StatelessWidget {
-  final Map<String, dynamic> product;
+  final Product product;
   ProductDetailPage(this.product);
 
   _showDialog(BuildContext context) {
@@ -49,7 +50,7 @@ class ProductDetailPage extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                     child: Image.asset(
-                      product["image"],
+                      product.image,
                       fit: BoxFit.fill,
                     ),
                   )
@@ -57,7 +58,7 @@ class ProductDetailPage extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.all(10),
-                child: Text(product["title"]),
+                child: Text(product.title),
               ),
               Container(
                 child: RaisedButton(

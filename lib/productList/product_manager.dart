@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import "./products.dart";
-import "../model/product.dart";
+import "../scopedModel/productScopedModel.dart";
 
 class ProductManager extends StatelessWidget {
-  final List<Product> products;
-
-  ProductManager(this.products);
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -14,7 +11,11 @@ class ProductManager extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
-              child: Products(products),
+              child: ScopedModelDescendant<ProductModel>(
+                builder:
+                    (BuildContext context, Widget child, ProductModel model) =>
+                        Products(model.products),
+              ),
               padding: EdgeInsets.all(20),
             ),
           )

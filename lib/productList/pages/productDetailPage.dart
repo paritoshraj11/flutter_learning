@@ -1,11 +1,13 @@
 import "package:flutter/material.dart";
+import "package:scoped_model/scoped_model.dart";
 import 'package:flutter/widgets.dart';
 import "package:async/async.dart";
 import "../../model/product.dart";
+import "../../scopedModel/productScopedModel.dart";
 
 class ProductDetailPage extends StatelessWidget {
-  final Product product;
-  ProductDetailPage(this.product);
+  final int index;
+  ProductDetailPage(this.index);
 
   _showDialog(BuildContext context) {
     showDialog(
@@ -29,18 +31,18 @@ class ProductDetailPage extends StatelessWidget {
               )
             ],
           );
-        }).then((value) {
-    });
+        }).then((value) {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () {
-          print("on pop listen called");
-          return Future.value(true);
-        },
-        child: Scaffold(
+    return WillPopScope(onWillPop: () {
+      print("on pop listen called");
+      return Future.value(true);
+    }, child: ScopedModelDescendant<ProductModel>(
+      builder: (BuildContext context, Widget child, ProductModel model) {
+        final Product product = model.products[index];
+        return Scaffold(
           appBar: AppBar(
             title: Text("Detail Page"),
           ),
@@ -68,6 +70,8 @@ class ProductDetailPage extends StatelessWidget {
               )
             ],
           ),
-        ));
+        );
+      },
+    ));
   }
 }

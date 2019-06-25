@@ -1,13 +1,12 @@
 import "package:flutter/material.dart";
+import "package:scoped_model/scoped_model.dart";
 import "../../helper/ensure_visible.dart";
 import "../../model/product.dart";
+import "../../scopedModel/productScopedModel.dart";
 
 class AddProduct extends StatefulWidget {
-  final Function addProduct;
-  final Function updateProduct;
-  final Product product;
   final int index;
-  AddProduct({this.addProduct, this.updateProduct, this.product, this.index});
+  AddProduct({this.index});
   @override
   State<StatefulWidget> createState() {
     return _AddProduct();
@@ -38,7 +37,7 @@ class _AddProduct extends State<AddProduct> {
     _formData["price"] = value;
   }
 
-  _onSave() {
+  _onSave(addProduct, updateProduct) {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -48,27 +47,33 @@ class _AddProduct extends State<AddProduct> {
         price: double.parse(_formData["price"]),
         description: _formData["description"],
         image: _formData["image"]);
-    if (widget.product != null) {
-      widget.updateProduct(widget.index, product);
+    if (widget.index != null) {
+      updateProduct(widget.index, product);
     } else {
-      widget.addProduct(product);
+      addProduct(product);
     }
     Navigator.popAndPushNamed(context, "/products");
   }
 
-  _getInitialValue(String key) {
-    switch (key) {
-      case "title":
-        return widget.product != null ? widget.product.title : "";
-      case "description":
-        return widget.product != null ? widget.product.description : "";
-      case "image":
-        return widget.product != null ? widget.product.image : "";
-      case "price":
-        return widget.product != null ? widget.product.price : "";
-      default:
-        return "";
-    }
+  _saveButtonBuilder(BuildContext context, ProductModel model) {
+    return RaisedButton(
+        color: Theme.of(context).primaryColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            Text(
+              "Add",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+        onPressed: () => _onSave(model.addProduct, model.updateProduct));
   }
 
   @override
@@ -76,88 +81,84 @@ class _AddProduct extends State<AddProduct> {
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double targetWidth = deviceWidth > 550 ? 500 : deviceWidth;
     final double targetPadding = deviceWidth - targetWidth;
-    final Widget pageContent = GestureDetector(
-      child: Container(
-          padding: EdgeInsets.all(15.0),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-              children: <Widget>[
-                EnsureVisibleWhenFocused(
-                    focusNode: titleFocusNode,
-                    child: TextFormField(
-                      focusNode: titleFocusNode,
-                      decoration: InputDecoration(
-                        labelText: "Title",
-                        icon: Icon(Icons.title),
-                      ),
-                      initialValue: _getInitialValue("title"),
-                      onSaved: _onTiteChange,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return "Title is required";
-                        }
-                      },
-                    )),
-                EnsureVisibleWhenFocused(
-                  focusNode: descriptionFocusNode,
-                  child: TextFormField(
-                    focusNode: descriptionFocusNode,
-                    decoration: InputDecoration(
-                        labelText: "Description",
-                        icon: Icon(Icons.description)),
-                    maxLines: 4,
-                    onSaved: _onDescriptionChange,
-                    initialValue: _getInitialValue("description"),
-                  ),
-                ),
-                EnsureVisibleWhenFocused(
-                  child: TextFormField(
-                    focusNode: priceFocusNode,
-                    decoration: InputDecoration(
-                        labelText: "Price", icon: Icon(Icons.monetization_on)),
-                    keyboardType: TextInputType.number,
-                    onSaved: _onPriceChange,
-                    initialValue: _getInitialValue("price").toString(),
-                  ),
-                  focusNode: priceFocusNode,
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: RaisedButton(
-                      color: Theme.of(context).primaryColor,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.add,
-                            color: Colors.white,
+    final Widget pageContent = ScopedModelDescendant(
+      builder: (BuildContext context, Widget child, ProductModel model) {
+        Product product = null;
+        if (widget.index != null) {
+          product = model.products[widget.index];
+        }
+        return GestureDetector(
+          child: Container(
+              padding: EdgeInsets.all(15.0),
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+                  children: <Widget>[
+                    EnsureVisibleWhenFocused(
+                        focusNode: titleFocusNode,
+                        child: TextFormField(
+                          focusNode: titleFocusNode,
+                          decoration: InputDecoration(
+                            labelText: "Title",
+                            icon: Icon(Icons.title),
                           ),
-                          Text(
-                            "Add",
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
+                          initialValue: product != null ? product.title : "",
+                          onSaved: _onTiteChange,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return "Title is required";
+                            }
+                          },
+                        )),
+                    EnsureVisibleWhenFocused(
+                      focusNode: descriptionFocusNode,
+                      child: TextFormField(
+                        focusNode: descriptionFocusNode,
+                        decoration: InputDecoration(
+                            labelText: "Description",
+                            icon: Icon(Icons.description)),
+                        maxLines: 4,
+                        onSaved: _onDescriptionChange,
+                        initialValue:
+                            product != null ? product.description : "",
                       ),
-                      onPressed: _onSave),
-                )
-              ],
-            ),
-          )),
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+                    ),
+                    EnsureVisibleWhenFocused(
+                      child: TextFormField(
+                        focusNode: priceFocusNode,
+                        decoration: InputDecoration(
+                            labelText: "Price",
+                            icon: Icon(Icons.monetization_on)),
+                        keyboardType: TextInputType.number,
+                        onSaved: _onPriceChange,
+                        initialValue:
+                            product != null ? product.price.toString() : "",
+                      ),
+                      focusNode: priceFocusNode,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: _saveButtonBuilder(context, model),
+                    )
+                  ],
+                ),
+              )),
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+        );
       },
     );
 
-    return widget.product == null
-        ? pageContent
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("Edit Product"),
-            ),
-            body: pageContent);
+    if (widget.index == null) {
+      return pageContent;
+    } else {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text("Edit Product"),
+          ),
+          body: pageContent);
+    }
   }
 }

@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
+import "package:scoped_model/scoped_model.dart";
 import "./addproductPage.dart";
 import "../../model/product.dart";
+import "../../scopedModel/productScopedModel.dart";
 
 class Avatar extends StatelessWidget {
   final String imageAsset;
@@ -20,18 +22,13 @@ class Avatar extends StatelessWidget {
 }
 
 class ProductList extends StatelessWidget {
-  final List<Product> products;
-  final Function updateProduct;
-  final Function removeProduct;
-  final Function insertProduct;
-  ProductList(
-      {this.products,
-      this.updateProduct,
-      this.removeProduct,
-      this.insertProduct});
-
-  _onDismissed(BuildContext context, DismissDirection direction,
-      Product product, int index) {
+  _onDismissed(
+      BuildContext context,
+      DismissDirection direction,
+      Product product,
+      int index,
+      Function removeProduct,
+      Function insertProduct) {
     print(direction);
     if (direction == DismissDirection.endToStart) {
       removeProduct(index);
@@ -51,7 +48,8 @@ class ProductList extends StatelessWidget {
     }
   }
 
-  Widget _buildDeleteOption(BuildContext context, Product product, int index) {
+  Widget _buildEditOption(BuildContext context, Product product, int index,
+      Function updateProduct) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () => Navigator.push(
@@ -59,21 +57,20 @@ class ProductList extends StatelessWidget {
           MaterialPageRoute(
               builder: (BuildContext context) => AddProduct(
                     index: index,
-                    product: product,
-                    updateProduct: updateProduct,
                   ))),
     );
   }
 
-  Widget _itemBuilder(BuildContext context, int index) {
+  Widget _itemBuilder(BuildContext context, int index, List<Product> products,
+      ProductModel model) {
     final Product product = products[index];
     return Dismissible(
       key: Key(product.title), //this must be unique
       background: Container(
         color: Colors.red,
       ),
-      onDismissed: (DismissDirection direction) =>
-          _onDismissed(context, direction, product, index),
+      onDismissed: (DismissDirection direction) => _onDismissed(context,
+          direction, product, index, model.removeProduct, model.insertProduct),
 
       child: Card(
         child: ListTile(
@@ -82,7 +79,8 @@ class ProductList extends StatelessWidget {
           //leading: Image.asset(product["image"]),
           title: Text(product.title),
           subtitle: Text("₹ ${product.price.toString()}"),
-          trailing: _buildDeleteOption(context, product, index),
+          trailing:
+              _buildEditOption(context, product, index, model.updateProduct),
         ),
       ),
     );
@@ -96,10 +94,18 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        padding: EdgeInsets.only(top: 10),
-        separatorBuilder: _seperatedBuilder,
-        itemCount: products.length,
-        itemBuilder: _itemBuilder);
+    return ScopedModelDescendant<ProductModel>(
+      builder: (BuildContext context, Widget child, ProductModel model) {
+        final List<Product> products = model.products;
+        print(
+            "build method of product list in manager section ${products.length}");
+        return ListView.separated(
+            padding: EdgeInsets.only(top: 10),
+            separatorBuilder: _seperatedBuilder,
+            itemCount: products.length,
+            itemBuilder: (BuildContext context, int index) =>
+                _itemBuilder(context, index, products, model));
+      },
+    );
   }
 }

@@ -2,16 +2,8 @@ import 'package:flutter/material.dart';
 import '../appBar.dart';
 import "./addproductPage.dart";
 import "./productList.dart";
-import "../../model/product.dart";
 
 class ManageProduct extends StatelessWidget {
-  final List<Product> products;
-  final Function addProduct;
-  final Function removeProduct;
-  final Function updateProduct;
-  final Function insertProduct;
-  ManageProduct(this.products, this.addProduct, this.removeProduct,
-      this.updateProduct, this.insertProduct);
   _tabs() {
     return TabBar(
       tabs: <Widget>[
@@ -29,16 +21,7 @@ class ManageProduct extends StatelessWidget {
 
   _tabsView() {
     return TabBarView(
-      children: <Widget>[
-        AddProduct(
-          addProduct: this.addProduct,
-        ),
-        ProductList(
-            products: this.products,
-            updateProduct: this.updateProduct,
-            removeProduct: this.removeProduct,
-            insertProduct: this.insertProduct)
-      ],
+      children: <Widget>[AddProduct(), ProductList()],
     );
   }
 

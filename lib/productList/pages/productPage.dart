@@ -4,9 +4,7 @@ import "../appBar.dart";
 import "../../model/product.dart";
 
 class ProductsPage extends StatelessWidget {
-  final List<Product> products;
-  ProductsPage(
-      this.products); //receving and passing product state related utility
+  //receving and passing product state related utility
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +18,7 @@ class ProductsPage extends StatelessWidget {
           )
         ],
       ),
-      body: ProductManager(products),
+      body: ProductManager(),
     );
   }
 }

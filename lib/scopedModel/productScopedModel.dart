@@ -11,23 +11,27 @@ class ProductModel extends Model {
   //add method
   void addProduct(Product product) {
     _products.add(product);
+    notifyListeners();
   }
 
   //remove method
   void removeProduct(int index) {
     _products.removeAt(index);
+    notifyListeners();
   }
 
   //insert product at specified index
   void insertProduct(
-    Product product,
+    Product product ,
     int index,
   ) {
     _products.insert(index, product);
+    notifyListeners();
   }
 
   //updating product at specified index
   void updateProduct(int index, Product product) {
     _products[index] = product;
+    notifyListeners();
   }
 }

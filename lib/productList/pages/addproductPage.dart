@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:scoped_model/scoped_model.dart";
 import "../../helper/ensure_visible.dart";
 import "../../model/product.dart";
-import "../../scopedModel/productScopedModel.dart";
+import "../../scopedModel/main.dart";
 
 class AddProduct extends StatefulWidget {
   final int index;
@@ -55,7 +55,7 @@ class _AddProduct extends State<AddProduct> {
     Navigator.popAndPushNamed(context, "/products");
   }
 
-  _saveButtonBuilder(BuildContext context, ProductModel model) {
+  _saveButtonBuilder(BuildContext context, MainModel model) {
     return RaisedButton(
         color: Theme.of(context).primaryColor,
         child: Row(
@@ -82,7 +82,7 @@ class _AddProduct extends State<AddProduct> {
     final double targetWidth = deviceWidth > 550 ? 500 : deviceWidth;
     final double targetPadding = deviceWidth - targetWidth;
     final Widget pageContent = ScopedModelDescendant(
-      builder: (BuildContext context, Widget child, ProductModel model) {
+      builder: (BuildContext context, Widget child, MainModel model) {
         Product product = null;
         if (widget.index != null) {
           product = model.products[widget.index];

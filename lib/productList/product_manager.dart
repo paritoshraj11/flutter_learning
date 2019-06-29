@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import "./products.dart";
-import "../scopedModel/productScopedModel.dart";
+import "../scopedModel/main.dart";
 
 class ProductManager extends StatelessWidget {
   @override
@@ -11,9 +11,9 @@ class ProductManager extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: Container(
-              child: ScopedModelDescendant<ProductModel>(
+              child: ScopedModelDescendant<MainModel>(
                 builder:
-                    (BuildContext context, Widget child, ProductModel model) =>
+                    (BuildContext context, Widget child, MainModel model) =>
                         Products(model.filterProduct, model.toogleFavourite,
                             model.productFilterStatus),
               ),

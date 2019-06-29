@@ -5,7 +5,7 @@ import "./productList/pages/authPage.dart";
 import "./productList/pages/productPage.dart";
 import "./productList/pages/productDetailPage.dart";
 import "./productList/pages/manageProductPage.dart";
-import "./scopedModel/productScopedModel.dart";
+import 'package:first_app/scopedModel/main.dart';
 
 //import "./Example/animationOne.dart";
 
@@ -29,9 +29,9 @@ class MyApp extends StatefulWidget {
 class _MyApp extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ProductModel>(
+    return ScopedModel<MainModel>(
       model:
-          ProductModel(), //initiated product model calss here and pass down to the widget tree from here
+          MainModel(), //initiated product model calss here and pass down to the widget tree from here
       child: MaterialApp(
         theme: ThemeData(
             accentColor: Colors.deepPurple, primarySwatch: Colors.deepOrange),

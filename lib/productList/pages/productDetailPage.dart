@@ -3,7 +3,7 @@ import "package:scoped_model/scoped_model.dart";
 import 'package:flutter/widgets.dart';
 import "package:async/async.dart";
 import "../../model/product.dart";
-import "../../scopedModel/productScopedModel.dart";
+import "../../scopedModel/main.dart";
 
 class ProductDetailPage extends StatelessWidget {
   final int index;
@@ -39,8 +39,8 @@ class ProductDetailPage extends StatelessWidget {
     return WillPopScope(onWillPop: () {
       print("on pop listen called");
       return Future.value(true);
-    }, child: ScopedModelDescendant<ProductModel>(
-      builder: (BuildContext context, Widget child, ProductModel model) {
+    }, child: ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         final Product product = model.products[index];
         return Scaffold(
           appBar: AppBar(

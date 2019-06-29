@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import "package:scoped_model/scoped_model.dart";
 import "./addproductPage.dart";
 import "../../model/product.dart";
-import "../../scopedModel/productScopedModel.dart";
+import "../../scopedModel/main.dart";
 
 class Avatar extends StatelessWidget {
   final String imageAsset;
@@ -62,7 +62,7 @@ class ProductList extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index, List<Product> products,
-      ProductModel model) {
+      MainModel model) {
     final Product product = products[index];
     return Dismissible(
       key: Key(product.title), //this must be unique
@@ -94,8 +94,8 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductModel>(
-      builder: (BuildContext context, Widget child, ProductModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         final List<Product> products = model.products;
         print(
             "build method of product list in manager section ${products.length}");

@@ -2,14 +2,15 @@ import "package:flutter/material.dart";
 import "../product_manager.dart";
 import "package:scoped_model/scoped_model.dart";
 import "../appBar.dart";
-import "../../scopedModel/productScopedModel.dart";
+import "../../scopedModel/main.dart";
+
 
 class ProductsPage extends StatelessWidget {
   //receving and passing product state related utility
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
-      builder: (BuildContext context, Widget child, ProductModel model) {
+      builder: (BuildContext context, Widget child, MainModel model) {
         return Scaffold(
           drawer: CustomAppBar(),
           appBar: AppBar(

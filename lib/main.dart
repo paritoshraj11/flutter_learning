@@ -7,7 +7,7 @@ import "./productList/pages/productDetailPage.dart";
 import "./productList/pages/manageProductPage.dart";
 import "./scopedModel/productScopedModel.dart";
 
-import "./Example/animationOne.dart";
+//import "./Example/animationOne.dart";
 
 // void main() {
 //   //debugPaintSizeEnabled = true;

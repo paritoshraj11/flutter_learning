@@ -22,7 +22,7 @@ class ProductModel extends Model {
 
   //insert product at specified index
   void insertProduct(
-    Product product ,
+    Product product,
     int index,
   ) {
     _products.insert(index, product);
@@ -32,6 +32,17 @@ class ProductModel extends Model {
   //updating product at specified index
   void updateProduct(int index, Product product) {
     _products[index] = product;
+    notifyListeners();
+  }
+
+  void toogleFavourite(int index) {
+    Product productItem = _products[index];
+    _products[index] = Product(
+        title: productItem.title,
+        description: productItem.description,
+        price: productItem.price,
+        image: productItem.image,
+        favourite: !productItem.favourite);
     notifyListeners();
   }
 }

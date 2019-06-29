@@ -5,9 +5,11 @@ class Product {
   final String description;
   final double price;
   final String image;
+  final bool favourite;
   Product(
       {@required this.title,
       this.description,
       @required this.price,
-      this.image});
+      this.image,
+      this.favourite = false});
 }

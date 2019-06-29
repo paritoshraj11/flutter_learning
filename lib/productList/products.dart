@@ -4,7 +4,8 @@ import "../model/product.dart";
 
 class Products extends StatelessWidget {
   final List<Product> products;
-  Products(this.products);
+  final Function toogleFavourite;
+  Products(this.products, this.toogleFavourite);
 
   Widget _listItem(BuildContext context, int index) {
     return GestureDetector(
@@ -49,8 +50,13 @@ class Products extends StatelessWidget {
                     )),
                     IconButton(
                       padding: EdgeInsets.only(right: 10),
-                      icon: Icon(Icons.favorite_border),
-                      onPressed: () {},
+                      color: Theme.of(context).primaryColor,
+                      icon: Icon(products[index].favourite
+                          ? Icons.favorite
+                          : Icons.favorite_border),
+                      onPressed: () {
+                        toogleFavourite(index);
+                      },
                     )
                   ],
                 ),

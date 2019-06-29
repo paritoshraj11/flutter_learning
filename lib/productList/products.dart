@@ -5,7 +5,8 @@ import "../model/product.dart";
 class Products extends StatelessWidget {
   final List<Product> products;
   final Function toogleFavourite;
-  Products(this.products, this.toogleFavourite);
+  final bool favouriteFilterStatus;
+  Products(this.products, this.toogleFavourite, this.favouriteFilterStatus);
 
   Widget _listItem(BuildContext context, int index) {
     return GestureDetector(
@@ -83,7 +84,8 @@ class Products extends StatelessWidget {
 
   Widget _buildList() {
     Widget renderWidget = Center(
-      child: Text("No Product Found, Please Add Product!!"),
+      child: Text(
+          "No ${favouriteFilterStatus ? "Favourite" : ""} Product Found, ${favouriteFilterStatus ? "Mark Favourite" : "Add Product"} !!"),
     );
     if (products.length > 0) {
       renderWidget = ListView.builder(

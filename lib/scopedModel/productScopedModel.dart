@@ -3,9 +3,28 @@ import "../model/product.dart";
 
 class ProductModel extends Model {
   List<Product> _products = [];
+  bool _isFavouriteOnly = false;
 
   List<Product> get products {
     return List.from(_products); //new  reference of product list
+  }
+
+  List<Product> get filterProduct {
+    if (_isFavouriteOnly == false) {
+      return List.from(_products);
+    }
+    return List.from(_products
+        .where((product) => product.favourite == _isFavouriteOnly)
+        .toList());
+  }
+
+  bool get productFilterStatus {
+    return _isFavouriteOnly;
+  }
+
+  void toogleProductsFavouriteList() {
+    _isFavouriteOnly = !_isFavouriteOnly;
+    notifyListeners();
   }
 
   //add method

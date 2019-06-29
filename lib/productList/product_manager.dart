@@ -14,7 +14,8 @@ class ProductManager extends StatelessWidget {
               child: ScopedModelDescendant<ProductModel>(
                 builder:
                     (BuildContext context, Widget child, ProductModel model) =>
-                        Products(model.products, model.toogleFavourite),
+                        Products(model.filterProduct, model.toogleFavourite,
+                            model.productFilterStatus),
               ),
               padding: EdgeInsets.all(20),
             ),

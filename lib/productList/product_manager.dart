@@ -3,7 +3,22 @@ import 'package:scoped_model/scoped_model.dart';
 import "./products.dart";
 import "../scopedModel/main.dart";
 
-class ProductManager extends StatelessWidget {
+class ProductManager extends StatefulWidget {
+  final Function fetchProductData;
+  ProductManager(this.fetchProductData);
+  @override
+  State<StatefulWidget> createState() {
+    return _ProductManager();
+  }
+}
+
+class _ProductManager extends State<ProductManager> {
+  @override
+  void initState() {
+    widget.fetchProductData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(

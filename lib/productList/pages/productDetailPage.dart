@@ -51,7 +51,7 @@ class ProductDetailPage extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Expanded(
-                    child: Image.asset(
+                    child: Image.network(
                       product.image,
                       fit: BoxFit.fill,
                     ),
@@ -62,6 +62,7 @@ class ProductDetailPage extends StatelessWidget {
                 padding: EdgeInsets.all(10),
                 child: Text(product.title),
               ),
+              Text(product.userEmail),
               Container(
                 child: RaisedButton(
                   child: Text("Delete"),

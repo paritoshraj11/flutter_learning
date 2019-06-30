@@ -15,7 +15,7 @@ class Products extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Column(
             children: <Widget>[
-              Image.asset(
+              Image.network(
                 products[index].image,
               ),
               Container(

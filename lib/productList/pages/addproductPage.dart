@@ -18,7 +18,9 @@ class _AddProduct extends State<AddProduct> {
     "title": null,
     "description": null,
     "price": null,
-    "image": "assets/food.jpg"
+    "image":
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe6ZnKnyge08Te70utvmzC6limwep28zlj7ZIFAZkNo0SUCumf"
+    //"image": "assets/food.jpg"
   };
   final titleFocusNode = FocusNode();
   final descriptionFocusNode = FocusNode();
@@ -42,15 +44,19 @@ class _AddProduct extends State<AddProduct> {
       return;
     }
     _formKey.currentState.save();
-    final Product product = Product(
-        title: _formData["title"],
-        price: double.parse(_formData["price"]),
-        description: _formData["description"],
-        image: _formData["image"]);
     if (widget.index != null) {
-      updateProduct(widget.index, product);
+      updateProduct(
+          index: widget.index,
+          title: _formData["title"],
+          description: _formData["description"],
+          price: double.parse(_formData["price"]),
+          image: _formData["image"]);
     } else {
-      addProduct(product);
+      addProduct(
+          title: _formData["title"],
+          description: _formData["description"],
+          price: double.parse(_formData["price"]),
+          image: _formData["image"]);
     }
     Navigator.popAndPushNamed(context, "/products");
   }

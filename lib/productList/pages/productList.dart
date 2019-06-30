@@ -16,7 +16,7 @@ class Avatar extends StatelessWidget {
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           image: DecorationImage(
-              fit: BoxFit.contain, image: AssetImage(this.imageAsset))),
+              fit: BoxFit.contain, image: NetworkImage(this.imageAsset))),
     );
   }
 }

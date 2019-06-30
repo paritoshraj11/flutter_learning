@@ -29,7 +29,7 @@ class ProductsPage extends StatelessWidget {
               )
             ],
           ),
-          body: ProductManager(),
+          body: ProductManager(model.fetchProductsData),
         );
       },
     );

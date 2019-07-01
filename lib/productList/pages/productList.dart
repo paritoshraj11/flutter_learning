@@ -32,7 +32,6 @@ class ProductList extends StatelessWidget {
     print(direction);
     if (direction == DismissDirection.endToStart) {
       removeProduct(index);
-      print("dismissed start to end");
       final snackBar = SnackBar(
         content: Text("${product.title} has been deleted!"),
         backgroundColor: Theme.of(context).primaryColor,
@@ -97,8 +96,6 @@ class ProductList extends StatelessWidget {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         final List<Product> products = model.products;
-        print(
-            "build method of product list in manager section ${products.length}");
         return ListView.separated(
             padding: EdgeInsets.only(top: 10),
             separatorBuilder: _seperatedBuilder,

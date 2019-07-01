@@ -39,18 +39,23 @@ class _AddProduct extends State<AddProduct> {
     _formData["price"] = value;
   }
 
-  _onSave(addProduct, updateProduct) {
+  _onSave(addProduct, updateProduct, Product product) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     if (widget.index != null) {
+      //in this case we always have product
       updateProduct(
-          index: widget.index,
-          title: _formData["title"],
-          description: _formData["description"],
-          price: double.parse(_formData["price"]),
-          image: _formData["image"]);
+              id: product.id,
+              index: widget.index,
+              title: _formData["title"],
+              description: _formData["description"],
+              price: double.parse(_formData["price"]),
+              image: _formData["image"])
+          .then((_) {
+        Navigator.popAndPushNamed(context, "/products");
+      });
     } else {
       addProduct(
               title: _formData["title"],
@@ -58,14 +63,12 @@ class _AddProduct extends State<AddProduct> {
               price: double.parse(_formData["price"]),
               image: _formData["image"])
           .then((_) {
-        print("adding product and now time to navigate ");
         Navigator.popAndPushNamed(context, "/products");
       });
     }
-//    Navigator.popAndPushNamed(context, "/products");
   }
 
-  _saveButtonBuilder(BuildContext context, MainModel model) {
+  _saveButtonBuilder(BuildContext context, MainModel model, Product product) {
     return RaisedButton(
         color: Theme.of(context).primaryColor,
         child: Row(
@@ -83,7 +86,8 @@ class _AddProduct extends State<AddProduct> {
             )
           ],
         ),
-        onPressed: () => _onSave(model.addProduct, model.updateProduct));
+        onPressed: () =>
+            _onSave(model.addProduct, model.updateProduct, product));
   }
 
   @override
@@ -149,7 +153,7 @@ class _AddProduct extends State<AddProduct> {
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 20),
-                      child: _saveButtonBuilder(context, model),
+                      child: _saveButtonBuilder(context, model, product),
                     )
                   ],
                 ),

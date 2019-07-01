@@ -11,11 +11,8 @@ class ConnectedModel extends Model {
       userId: "234ertyucv345",
       userPassword: "helloOne123");
   //creating dummy uset becasue its loose when app refresh;
-
   List<Product> _products = [];
-
   bool _loading = false;
-
   String get FIREBASE_URL {
     return "https://my-products-370c8.firebaseio.com/products.json";
   }
@@ -54,16 +51,33 @@ class ConnectedModel extends Model {
   }
 
   //updating product at specified index
-  void updateProduct({index, title, price, description, image}) {
-    Product product = Product(
-        title: title,
-        image: image,
-        price: price,
-        description: description,
-        userEmail: _authenticatedUser.userEmail,
-        userId: _authenticatedUser.userId);
-    _products[index] = product;
-    notifyListeners();
+  Future<dynamic> updateProduct({index, title, price, description, image, id}) {
+    final Map<String, dynamic> productData = {
+      "id": id,
+      "title": title,
+      "image": image,
+      "price": price,
+      "description": description,
+      "userEmail": _authenticatedUser.userEmail,
+      "userId": _authenticatedUser.userId
+    };
+    return http
+        .put("https://my-products-370c8.firebaseio.com/products/$id.json",
+            body: json.encode(productData))
+        .then((http.Response response) {
+      Product product = Product(
+          id: id,
+          title: title,
+          image: image,
+          price: price,
+          description: description,
+          userEmail: _authenticatedUser.userEmail,
+          userId: _authenticatedUser.userId);
+      _products[index] = product;
+      notifyListeners();
+    }).catchError((error) {
+      print("error  in updating product $json.decode(error");
+    });
   }
 }
 

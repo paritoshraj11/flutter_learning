@@ -17,9 +17,15 @@ class Products extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Column(
             children: <Widget>[
-              Image.network(
-                products[index].image,
+              FadeInImage(
+                image: NetworkImage(products[index].image),
+                height: 250,
+                fit: BoxFit.cover,
+                placeholder: AssetImage("assets/placeholder.jpg"),
               ),
+              // Image.network(
+              //   products[index].image,
+              // )
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Row(

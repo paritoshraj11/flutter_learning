@@ -29,21 +29,22 @@ class ProductList extends StatelessWidget {
       int index,
       Function removeProduct,
       Function insertProduct) {
-    print(direction);
+    final String productTitle = product.title;
     if (direction == DismissDirection.endToStart) {
-      removeProduct(index);
-      final snackBar = SnackBar(
-        content: Text("${product.title} has been deleted!"),
-        backgroundColor: Theme.of(context).primaryColor,
-        action: SnackBarAction(
-          textColor: Colors.white,
-          label: "Undo",
-          onPressed: () {
-            insertProduct(product, index);
-          },
-        ),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
+      removeProduct(index).then((_) {
+        final snackBar = SnackBar(
+          content: Text("$productTitle has been deleted!"),
+          backgroundColor: Theme.of(context).primaryColor,
+          // action: SnackBarAction(
+          //   textColor: Colors.white,
+          //   label: "Undo",
+          //   onPressed: () {
+          //     insertProduct(product, index);
+          //   },
+          // ),
+        );
+        Scaffold.of(context).showSnackBar(snackBar);
+      });
     }
   }
 

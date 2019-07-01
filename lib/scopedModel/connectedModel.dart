@@ -152,9 +152,18 @@ class ProductModel extends ConnectedModel {
   }
 
   //remove method
-  void removeProduct(int index) {
-    _products.removeAt(index);
-    notifyListeners();
+  Future<dynamic> removeProduct(int index) {
+    final Product product = _products[index];
+    String productId = product.id;
+    return http
+        .delete(
+            "https://my-products-370c8.firebaseio.com/products/$productId.json")
+        .then((http.Response response) {
+      _products.removeAt(index);
+      notifyListeners();
+    }).catchError((error) {
+      print("error in deleting product $error");
+    });
   }
 
   //insert product at specified index

@@ -27,10 +27,19 @@ class _ProductManager extends State<ProductManager> {
           Expanded(
             child: Container(
               child: ScopedModelDescendant<MainModel>(
-                builder:
-                    (BuildContext context, Widget child, MainModel model) =>
-                        Products(model.filterProduct, model.toogleFavourite,
-                            model.productFilterStatus),
+                builder: (BuildContext context, Widget child, MainModel model) {
+                  if (model.loadingStatus) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColor),
+                        //backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                    );
+                  }
+                  return Products(model.filterProduct, model.toogleFavourite,
+                      model.productFilterStatus);
+                },
               ),
               padding: EdgeInsets.all(20),
             ),

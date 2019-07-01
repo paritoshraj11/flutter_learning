@@ -13,8 +13,14 @@ class ConnectedModel extends Model {
 
   List<Product> _products = [];
 
+  bool _loading = false;
+
   String get FIREBASE_URL {
     return "https://my-products-370c8.firebaseio.com/products.json";
+  }
+
+  bool get loadingStatus {
+    return _loading;
   }
 
   //add method
@@ -86,6 +92,7 @@ class ProductModel extends ConnectedModel {
   }
 
   fetchProductsData() {
+    _loading = true;
     http.get(FIREBASE_URL).then((http.Response response) {
       Map<String, dynamic> responseData = jsonDecode(response.body);
       List<Product> productsData = [];
@@ -100,6 +107,7 @@ class ProductModel extends ConnectedModel {
             userId: product["userId"]));
       });
       _products = productsData;
+      _loading = false;
       notifyListeners();
     });
   }

@@ -53,12 +53,16 @@ class _AddProduct extends State<AddProduct> {
           image: _formData["image"]);
     } else {
       addProduct(
-          title: _formData["title"],
-          description: _formData["description"],
-          price: double.parse(_formData["price"]),
-          image: _formData["image"]);
+              title: _formData["title"],
+              description: _formData["description"],
+              price: double.parse(_formData["price"]),
+              image: _formData["image"])
+          .then((_) {
+        print("adding product and now time to navigate ");
+        Navigator.popAndPushNamed(context, "/products");
+      });
     }
-    Navigator.popAndPushNamed(context, "/products");
+//    Navigator.popAndPushNamed(context, "/products");
   }
 
   _saveButtonBuilder(BuildContext context, MainModel model) {

@@ -1,6 +1,7 @@
 import "package:scoped_model/scoped_model.dart";
 import "package:http/http.dart" as http;
 import "dart:convert";
+import "dart:async";
 import "../model/user.dart";
 import "../model/product.dart";
 
@@ -24,7 +25,7 @@ class ConnectedModel extends Model {
   }
 
   //add method
-  void addProduct({title, description, price, image}) {
+  Future<dynamic> addProduct({title, description, price, image}) {
     final Map<String, dynamic> productData = {
       "title": title,
       "image": image,
@@ -33,7 +34,7 @@ class ConnectedModel extends Model {
       "userEmail": _authenticatedUser.userEmail,
       "userId": _authenticatedUser.userId
     };
-    http
+    return http
         .post(FIREBASE_URL, body: jsonEncode(productData))
         .then((http.Response response) {
       Map<String, dynamic> responseData = jsonDecode(response.body);

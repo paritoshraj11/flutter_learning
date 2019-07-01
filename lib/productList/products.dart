@@ -5,8 +5,10 @@ import "../model/product.dart";
 class Products extends StatelessWidget {
   final List<Product> products;
   final Function toogleFavourite;
+  final Function fetchProductData;
   final bool favouriteFilterStatus;
-  Products(this.products, this.toogleFavourite, this.favouriteFilterStatus);
+  Products(this.products, this.toogleFavourite, this.favouriteFilterStatus,
+      this.fetchProductData);
 
   Widget _listItem(BuildContext context, int index) {
     return GestureDetector(
@@ -93,7 +95,10 @@ class Products extends StatelessWidget {
         itemCount: products.length,
       );
     }
-    return renderWidget;
+    return RefreshIndicator(
+      child: renderWidget,
+      onRefresh: fetchProductData,
+    );
   }
 
   @override

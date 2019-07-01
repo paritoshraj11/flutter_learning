@@ -106,10 +106,10 @@ class ProductModel extends ConnectedModel {
     return List.from(_products); //new  reference of product list
   }
 
-  fetchProductsData() {
+  Future<Null> fetchProductsData() {
     _loading = true;
     notifyListeners();
-    http.get(FIREBASE_URL).then((http.Response response) {
+    return http.get(FIREBASE_URL).then((http.Response response) {
       Map<String, dynamic> responseData = jsonDecode(response.body);
       if (responseData == null) {
         _loading = false;

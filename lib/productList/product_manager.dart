@@ -38,7 +38,7 @@ class _ProductManager extends State<ProductManager> {
                     );
                   }
                   return Products(model.filterProduct, model.toogleFavourite,
-                      model.productFilterStatus);
+                      model.productFilterStatus, model.fetchProductsData);
                 },
               ),
               padding: EdgeInsets.all(20),

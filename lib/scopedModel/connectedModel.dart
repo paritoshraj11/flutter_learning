@@ -93,8 +93,14 @@ class ProductModel extends ConnectedModel {
 
   fetchProductsData() {
     _loading = true;
+    notifyListeners();
     http.get(FIREBASE_URL).then((http.Response response) {
       Map<String, dynamic> responseData = jsonDecode(response.body);
+      if (responseData == null) {
+        _loading = false;
+        notifyListeners();
+        return;
+      }
       List<Product> productsData = [];
       responseData.forEach((key, product) {
         productsData.add(Product(

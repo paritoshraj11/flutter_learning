@@ -1,5 +1,6 @@
 import "package:scoped_model/scoped_model.dart";
 import "package:http/http.dart" as http;
+import 'package:firebase_auth/firebase_auth.dart';
 import "dart:convert";
 import "dart:async";
 import "../model/user.dart";
@@ -82,6 +83,7 @@ class ConnectedModel extends Model {
 }
 
 class UserModel extends ConnectedModel {
+  final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
   void setAuthenticatedUser({String id, String email, String password}) {
     print("$email dfghmfghjfghjkg");
     User user =
@@ -90,12 +92,18 @@ class UserModel extends ConnectedModel {
     notifyListeners();
   }
 
-  Future<bool> createUser(String email, String password) {
-    print(">>> email $email and password $password");
-    return Future.value(true);
+  Future<bool> createUser(String email, String password) async {
+    try {
+      FirebaseUser user = await _firebaseAuthInstance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      return true;
+    } catch (err) {
+      print(">>>> creating user error ::::: $err");
+      return throw ("some thing is worng in craeting user");
+    }
   }
 
-  Future <bool> authentiacteuser(String email, String password){
+  Future<bool> authentiacteuser(String email, String password) {
     return Future.value(true);
   }
 

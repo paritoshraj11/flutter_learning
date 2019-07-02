@@ -63,8 +63,10 @@ class _AuthPage extends State<AuthPage> {
         if (_auth == Auth.SignUp) {
           model
               .createUser(_authData["email"], _authData["password"])
-              .then((vlue) {
-            _showSnackBar(context, "User Created");
+              .then((value) {
+            if (value) _showSnackBar(context, "User Created");
+          }).catchError((error) {
+            _showSnackBar(context, error.toString());
           });
         } else {
           model.authentiacteuser(_authData["email"], _authData["password"]);
@@ -115,7 +117,14 @@ class _AuthPage extends State<AuthPage> {
                               keyboardType: TextInputType.emailAddress,
                               validator: (String value) {
                                 if (value.isEmpty) {
-                                  return "Either email is empty or invalid";
+                                  return "Enter Email Address";
+                                }
+
+                                String p =
+                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                                RegExp regExp = new RegExp(p);
+                                if (!regExp.hasMatch(value)) {
+                                  return "Enter valid Email Address";
                                 }
                                 return null;
                               },

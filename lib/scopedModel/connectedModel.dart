@@ -90,6 +90,15 @@ class UserModel extends ConnectedModel {
     notifyListeners();
   }
 
+  Future<bool> createUser(String email, String password) {
+    print(">>> email $email and password $password");
+    return Future.value(true);
+  }
+
+  Future <bool> authentiacteuser(String email, String password){
+    return Future.value(true);
+  }
+
   User get authenticatedUser {
     return _authenticatedUser;
   }

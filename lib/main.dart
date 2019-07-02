@@ -31,7 +31,7 @@ class _MyApp extends State<MyApp> {
             accentColor: Colors.deepPurple, primarySwatch: Colors.deepOrange),
         routes: {
           "/": (BuildContext context) =>
-              Auth(), //it is default route of the application.
+              AuthPage(), //it is default route of the application.
           "/products": (BuildContext context) => ProductsPage(),
           "/admin-product": (BuildContext context) => ManageProduct()
         },

@@ -6,7 +6,12 @@ import "./productList/pages/productPage.dart";
 import "./productList/pages/productDetailPage.dart";
 import "./productList/pages/manageProductPage.dart";
 import 'package:first_app/scopedModel/main.dart';
+import './Example/stackExample.dart';
 
+// void main() {
+//   //debugPaintSizeEnabled = true;
+//   runApp(StackApp());
+// }
 
 void main() {
   //debugPaintSizeEnabled = true;

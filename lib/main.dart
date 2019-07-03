@@ -6,7 +6,7 @@ import "./productList/pages/productPage.dart";
 import "./productList/pages/productDetailPage.dart";
 import "./productList/pages/manageProductPage.dart";
 import 'package:first_app/scopedModel/main.dart';
-import './Example/stackExample.dart';
+//import './Example/stackExample.dart';
 
 // void main() {
 //   //debugPaintSizeEnabled = true;
@@ -26,17 +26,31 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
+  final MainModel _model = MainModel();
+
+  @override
+  void initState() {
+    _model.loadCurrentUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModel<MainModel>(
       model:
-          MainModel(), //initiated product model calss here and pass down to the widget tree from here
+          _model, //initiated product model calss here and pass down to the widget tree from here
       child: MaterialApp(
         theme: ThemeData(
             accentColor: Colors.deepPurple, primarySwatch: Colors.deepOrange),
         routes: {
-          "/": (BuildContext context) =>
-              AuthPage(), //it is default route of the application.
+          "/": (BuildContext context) => ScopedModelDescendant(
+                builder: (BuildContext context, Widget child, MainModel model) {
+                  if (model.authenticatedUser != null) {
+                    return ProductsPage();
+                  }
+                  return AuthPage();
+                },
+              ), //it is default route of the application.
           "/products": (BuildContext context) => ProductsPage(),
           "/admin-product": (BuildContext context) => ManageProduct()
         },

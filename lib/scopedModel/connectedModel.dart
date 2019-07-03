@@ -7,10 +7,7 @@ import "../model/user.dart";
 import "../model/product.dart";
 
 class ConnectedModel extends Model {
-  User _authenticatedUser = User(
-      userEmail: "paritoshraj11@gmail.com",
-      userId: "234ertyucv345",
-      userPassword: "helloOne123");
+  User _authenticatedUser;
   //creating dummy uset becasue its loose when app refresh;
   List<Product> _products = [];
   bool _loading = false;
@@ -83,28 +80,60 @@ class ConnectedModel extends Model {
 }
 
 class UserModel extends ConnectedModel {
+  bool _userLoading = false;
   final FirebaseAuth _firebaseAuthInstance = FirebaseAuth.instance;
-  void setAuthenticatedUser({String id, String email, String password}) {
-    print("$email dfghmfghjfghjkg");
-    User user =
-        User(userId: "reandom_123", userEmail: email, userPassword: password);
+
+  bool get loadingUserStatus {
+    return _userLoading;
+  }
+
+  void setAuthenticatedUser({String userId, String userEmail}) {
+    User user = User(userId: userId, userEmail: userEmail);
     _authenticatedUser = user;
     notifyListeners();
   }
 
+  void loadCurrentUser() async {
+    try {
+      FirebaseUser user = await _firebaseAuthInstance.currentUser();
+      setAuthenticatedUser(userId: user.uid, userEmail: user.email);
+    } catch (err) {
+      print(">>>>> getting error in laod current user $err");
+    }
+  }
+
   Future<bool> createUser(String email, String password) async {
+    _userLoading = true;
+    notifyListeners();
     try {
       FirebaseUser user = await _firebaseAuthInstance
           .createUserWithEmailAndPassword(email: email, password: password);
+      setAuthenticatedUser(userId: user.uid, userEmail: user.email);
+      _userLoading = false;
+      notifyListeners();
       return true;
     } catch (err) {
-      print(">>>> creating user error ::::: $err");
+      _userLoading = false;
+      notifyListeners();
       return throw ("some thing is worng in craeting user");
     }
   }
 
-  Future<bool> authentiacteuser(String email, String password) {
-    return Future.value(true);
+  Future<bool> authentiacteuser(String email, String password) async {
+    _userLoading = true;
+    notifyListeners();
+    try {
+      FirebaseUser user = await _firebaseAuthInstance
+          .signInWithEmailAndPassword(email: email, password: password);
+      setAuthenticatedUser(userId: user.uid, userEmail: user.email);
+      _userLoading = false;
+      notifyListeners();
+      return true;
+    } catch (err) {
+      _userLoading = false;
+      notifyListeners();
+      return throw ("Email Id or password is incorrect");
+    }
   }
 
   User get authenticatedUser {
@@ -112,7 +141,9 @@ class UserModel extends ConnectedModel {
   }
 
   void removeAuthenticatedUser() {
-    _authenticatedUser = null;
+    _firebaseAuthInstance.signOut().then((_) {
+      _authenticatedUser = null;
+    });
   }
 }
 

@@ -43,7 +43,7 @@ class _MyApp extends State<MyApp> {
         theme: ThemeData(
             accentColor: Colors.deepPurple, primarySwatch: Colors.deepOrange),
         routes: {
-          "/": (BuildContext context) => ScopedModelDescendant(
+          "/": (BuildContext context) => ScopedModelDescendant<MainModel>(
                 builder: (BuildContext context, Widget child, MainModel model) {
                   if (model.authenticatedUser != null) {
                     return ProductsPage();

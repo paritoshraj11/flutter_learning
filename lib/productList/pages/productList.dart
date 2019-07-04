@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter/widgets.dart';
+import "dart:async";
 import "package:scoped_model/scoped_model.dart";
 import "./addproductPage.dart";
 import "../../model/product.dart";
@@ -28,23 +29,28 @@ class ProductList extends StatelessWidget {
       Product product,
       int index,
       Function removeProduct,
+      Function removeProductPermanent,
       Function insertProduct) {
     final String productTitle = product.title;
     if (direction == DismissDirection.endToStart) {
-      removeProduct(index).then((_) {
-        final snackBar = SnackBar(
-          content: Text("$productTitle has been deleted!"),
-          backgroundColor: Theme.of(context).primaryColor,
-          // action: SnackBarAction(
-          //   textColor: Colors.white,
-          //   label: "Undo",
-          //   onPressed: () {
-          //     insertProduct(product, index);
-          //   },
-          // ),
-        );
-        Scaffold.of(context).showSnackBar(snackBar);
-      });
+      var timer =
+          Timer(Duration(seconds: 3), () => removeProductPermanent(product));
+      removeProduct(index);
+      final snackBar = SnackBar(
+        duration: Duration(seconds: 2),
+        content: Text("$productTitle has been deleted!"),
+        backgroundColor: Theme.of(context).primaryColor,
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: "Undo",
+          onPressed: () {
+            //clear timer
+            timer.cancel();
+            insertProduct(product, index);
+          },
+        ),
+      );
+      Scaffold.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -69,8 +75,14 @@ class ProductList extends StatelessWidget {
       background: Container(
         color: Colors.red,
       ),
-      onDismissed: (DismissDirection direction) => _onDismissed(context,
-          direction, product, index, model.removeProduct, model.insertProduct),
+      onDismissed: (DismissDirection direction) => _onDismissed(
+          context,
+          direction,
+          product,
+          index,
+          model.removeProduct,
+          model.removeProductPermanent,
+          model.insertProduct),
 
       child: Card(
         child: ListTile(

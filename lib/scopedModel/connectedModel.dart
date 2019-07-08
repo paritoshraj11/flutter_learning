@@ -237,6 +237,7 @@ class ProductModel extends ConnectedModel {
             title: product["title"],
             image: product["image"],
             price: product["price"],
+            imagePath: product["imagePath"],
             description: product["description"],
             userEmail: product["userEmail"],
             userId: product["userId"]));
@@ -268,11 +269,14 @@ class ProductModel extends ConnectedModel {
   //remove method
   Future<dynamic> removeProductPermanent(Product product) async {
     String productId = product.id;
-    Map<String, String> deleteBodyData = {"imagePath": product.imagePath};
+    Map<String, dynamic> deleteBodyData = {"imagePath": product.imagePath};
     try {
       await http.post(
           "https://us-central1-my-products-370c8.cloudfunctions.net/deleteImage",
-          body: json.encode(deleteBodyData));
+          body: jsonEncode(deleteBodyData),
+          headers: {
+            "Content-Type": "application/json",
+          });
     } catch (err) {
       print("/////......... deleting error $err");
     }

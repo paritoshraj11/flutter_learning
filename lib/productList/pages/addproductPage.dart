@@ -1,5 +1,9 @@
 import "package:flutter/material.dart";
+import 'package:image_picker/image_picker.dart';
 import "package:scoped_model/scoped_model.dart";
+import 'package:permission_handler/permission_handler.dart';
+import "dart:async";
+import "dart:io";
 import "../../helper/ensure_visible.dart";
 import "../../model/product.dart";
 import "../../scopedModel/main.dart";
@@ -18,10 +22,11 @@ class _AddProduct extends State<AddProduct> {
     "title": null,
     "description": null,
     "price": null,
-    "image":
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe6ZnKnyge08Te70utvmzC6limwep28zlj7ZIFAZkNo0SUCumf"
+    // "image":
+    //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSe6ZnKnyge08Te70utvmzC6limwep28zlj7ZIFAZkNo0SUCumf"
     //"image": "assets/food.jpg"
   };
+  File _imageFile;
   final titleFocusNode = FocusNode();
   final descriptionFocusNode = FocusNode();
   final priceFocusNode = FocusNode();
@@ -52,7 +57,8 @@ class _AddProduct extends State<AddProduct> {
               title: _formData["title"],
               description: _formData["description"],
               price: double.parse(_formData["price"]),
-              image: _formData["image"])
+              image:
+                  _imageFile) // in editing mode if it is not updated if is null
           .then((_) {
         Navigator.popAndPushNamed(context, "/products");
       });
@@ -61,7 +67,7 @@ class _AddProduct extends State<AddProduct> {
               title: _formData["title"],
               description: _formData["description"],
               price: double.parse(_formData["price"]),
-              image: _formData["image"])
+              image: _imageFile)
           .then((_) {
         Navigator.popAndPushNamed(context, "/products");
       });
@@ -88,6 +94,83 @@ class _AddProduct extends State<AddProduct> {
         ),
         onPressed: () =>
             _onSave(model.addProduct, model.updateProduct, product));
+  }
+
+  void _getImage(BuildContext context, ImageSource source) async {
+    ImagePicker.pickImage(source: source).then((File image) {
+      setState(() {
+        _imageFile = image;
+      });
+      Navigator.pop(context);
+    }).catchError((err) {
+      print(">>>> error on opening camera / gallery $err");
+    });
+  }
+
+  Widget _imageButtonBuilder(BuildContext context) {
+    return OutlineButton(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[Icon(Icons.camera_alt), Text("Image")],
+      ),
+      onPressed: () {
+        //create bottom sliide up modal
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 200,
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(top: 20, bottom: 20),
+                      child: Text(
+                        'Pick Image',
+                        style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Divider(),
+                    FlatButton(
+                        child: Text("Camera",
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold)),
+                        onPressed: () {
+                          _getImage(context, ImageSource.camera);
+                        }),
+                    Divider(),
+                    FlatButton(
+                      onPressed: () {
+                        _getImage(context, ImageSource.gallery);
+                      },
+                      child: Text("Gallery",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold)),
+                    )
+                  ],
+                ),
+              );
+            });
+      },
+    );
+  }
+
+  Widget _imagePreviewBuilder(BuildContext context, Product product) {
+    Widget imagePrivew = _imageFile != null
+        ? Image.file(
+            _imageFile,
+            height: 300,
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.cover,
+          )
+        : product != null ? Image.network(product.image) : Container();
+    return Container(
+      padding: EdgeInsets.only(top: 10),
+      child: imagePrivew,
+    );
   }
 
   @override
@@ -151,8 +234,13 @@ class _AddProduct extends State<AddProduct> {
                       ),
                       focusNode: priceFocusNode,
                     ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    _imageButtonBuilder(context),
+                    _imagePreviewBuilder(context, product),
                     Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: EdgeInsets.only(top: 10),
                       child: _saveButtonBuilder(context, model, product),
                     )
                   ],

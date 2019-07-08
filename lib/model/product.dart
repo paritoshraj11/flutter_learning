@@ -9,14 +9,15 @@ class Product {
   final bool favourite;
   final String userId;
   final String userEmail;
+  final String imagePath;
   Product(
-      {
-      @required this.id,  
+      {@required this.id,
       @required this.title,
       this.description,
       @required this.price,
       this.image,
       this.favourite = false,
       @required this.userId,
+      this.imagePath,
       @required this.userEmail});
 }

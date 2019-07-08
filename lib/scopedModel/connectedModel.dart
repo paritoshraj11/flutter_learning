@@ -3,6 +3,9 @@ import "package:http/http.dart" as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import "dart:convert";
 import "dart:async";
+import "dart:io";
+import 'package:mime/mime.dart';
+import 'package:http_parser/http_parser.dart';
 import "../model/user.dart";
 import "../model/product.dart";
 
@@ -19,11 +22,57 @@ class ConnectedModel extends Model {
     return _loading;
   }
 
+  Future<Map<String, dynamic>> _uploadImage(File image,
+      {String imagePath}) async {
+    //find type of file for naming
+    final mimeTypeData = lookupMimeType(image.path).split('/');
+
+    //creating requst for uploading file it is multipart file request
+    final imageUploadRequest = http.MultipartRequest(
+        "POST",
+        Uri.parse(
+            'https://us-central1-my-products-370c8.cloudfunctions.net/storeImage'));
+
+    final file = await http.MultipartFile.fromPath('image', image.path,
+        contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
+
+    //adding file in request
+    imageUploadRequest.files.add(file);
+
+    if (imagePath != null) {
+      imageUploadRequest.fields['imagePath'] = Uri.encodeComponent(imagePath);
+    }
+
+    try {
+      final streamResponse = await imageUploadRequest.send();
+      final response = await http.Response.fromStream(streamResponse);
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        print(">>>> error in file upload methods without catch blao");
+        return null;
+      }
+
+      final responseData = json.decode(response.body);
+      return responseData;
+    } catch (err) {
+      print(">>> error in uploading $err");
+      return null;
+    }
+  }
+
   //add method
-  Future<dynamic> addProduct({title, description, price, image}) {
+  Future<dynamic> addProduct({title, description, price, image}) async {
+    _loading = true;
+    notifyListeners();
+
+    final uploadImageData = await _uploadImage(image);
+    if (uploadImageData == null) {
+      return false;
+    }
+
     final Map<String, dynamic> productData = {
       "title": title,
-      "image": image,
+      "image": uploadImageData["imageUrl"],
+      "imagePath": uploadImageData["imagePath"],
       "price": price,
       "description": description,
       "userEmail": _authenticatedUser.userEmail,
@@ -36,12 +85,14 @@ class ConnectedModel extends Model {
       Product product = Product(
           id: responseData["name"],
           title: title,
-          image: image,
+          image: uploadImageData["imageUrl"],
+          imagePath: uploadImageData["imagePath"],
           price: price,
           description: description,
           userEmail: _authenticatedUser.userEmail,
           userId: _authenticatedUser.userId);
       _products.add(product);
+      _loading = false;
       notifyListeners();
     }).catchError((err) {
       print("error in uploading data");
@@ -49,11 +100,26 @@ class ConnectedModel extends Model {
   }
 
   //updating product at specified index
-  Future<dynamic> updateProduct({index, title, price, description, image, id}) {
+  Future<dynamic> updateProduct(
+      {index, title, price, description, image, id}) async {
+    //if image is not null then, new updated image is there
+
+    print(">>>>>>>>> $image");
+
+    Map<String, dynamic> updatedUploadedImage = {
+      "imageUrl": _products[index].image,
+      "imagePath": _products[index].imagePath
+    };
+
+    if (image != null) {
+      updatedUploadedImage = await _uploadImage(image);
+    }
+
     final Map<String, dynamic> productData = {
       "id": id,
       "title": title,
-      "image": image,
+      "image": updatedUploadedImage["imageUrl"],
+      "imagePath": updatedUploadedImage["imagePath"],
       "price": price,
       "description": description,
       "userEmail": _authenticatedUser.userEmail,
@@ -200,8 +266,16 @@ class ProductModel extends ConnectedModel {
   }
 
   //remove method
-  Future<dynamic> removeProductPermanent(Product product) {
+  Future<dynamic> removeProductPermanent(Product product) async {
     String productId = product.id;
+    Map<String, String> deleteBodyData = {"imagePath": product.imagePath};
+    try {
+      await http.post(
+          "https://us-central1-my-products-370c8.cloudfunctions.net/deleteImage",
+          body: json.encode(deleteBodyData));
+    } catch (err) {
+      print("/////......... deleting error $err");
+    }
     return http
         .delete(
             "https://my-products-370c8.firebaseio.com/products/$productId.json")

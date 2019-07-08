@@ -11,6 +11,9 @@ class Avatar extends StatelessWidget {
   Avatar(this.imageAsset);
   @override
   Widget build(BuildContext context) {
+    if (this.imageAsset == null) {
+      return Container();
+    }
     return Container(
       height: 50,
       width: 50,
@@ -85,7 +88,8 @@ class ProductList extends StatelessWidget {
           model.insertProduct),
 
       child: Card(
-        child: ListTile(
+        child: Container(
+            child: ListTile(
           // contentPadding: EdgeInsets.all(20),
           leading: Avatar(product.image),
           //leading: Image.asset(product["image"]),
@@ -93,7 +97,7 @@ class ProductList extends StatelessWidget {
           subtitle: Text("₹ ${product.price.toString()}"),
           trailing:
               _buildEditOption(context, product, index, model.updateProduct),
-        ),
+        )),
       ),
     );
   }

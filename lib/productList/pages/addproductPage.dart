@@ -44,13 +44,31 @@ class _AddProduct extends State<AddProduct> {
     _formData["price"] = value;
   }
 
-  _onSave(addProduct, updateProduct, Product product) {
+  _showLoadinIndicator(context) {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor),
+              )
+            ],
+          );
+        });
+  }
+
+  _onSave(context, addProduct, updateProduct, Product product) {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     if (widget.index != null) {
       //in this case we always have product
+      _showLoadinIndicator(context);
       updateProduct(
               id: product.id,
               index: widget.index,
@@ -60,15 +78,18 @@ class _AddProduct extends State<AddProduct> {
               image:
                   _imageFile) // in editing mode if it is not updated if is null
           .then((_) {
+        Navigator.pop(context);
         Navigator.popAndPushNamed(context, "/products");
       });
     } else {
+      _showLoadinIndicator(context);
       addProduct(
               title: _formData["title"],
               description: _formData["description"],
               price: double.parse(_formData["price"]),
               image: _imageFile)
           .then((_) {
+        Navigator.pop(context);
         Navigator.popAndPushNamed(context, "/products");
       });
     }
@@ -93,7 +114,7 @@ class _AddProduct extends State<AddProduct> {
           ],
         ),
         onPressed: () =>
-            _onSave(model.addProduct, model.updateProduct, product));
+            _onSave(context, model.addProduct, model.updateProduct, product));
   }
 
   void _getImage(BuildContext context, ImageSource source) async {
@@ -166,7 +187,9 @@ class _AddProduct extends State<AddProduct> {
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           )
-        : product != null ? Image.network(product.image) : Container();
+        : product != null && product.image != null
+            ? Image.network(product.image)
+            : Container();
     return Container(
       padding: EdgeInsets.only(top: 10),
       child: imagePrivew,

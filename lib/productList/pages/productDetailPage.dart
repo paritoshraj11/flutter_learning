@@ -54,21 +54,33 @@ class ProductDetailPage extends StatelessWidget {
                     child: Image.network(
                       product.image,
                       fit: BoxFit.fill,
+                      height: 300,
                     ),
                   )
                 ],
               ),
               Container(
                 padding: EdgeInsets.all(10),
-                child: Text(product.title),
+                child: Text(
+                  product.title,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).accentColor),
+                ),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Text(product.userEmail),
-              Container(
-                child: RaisedButton(
-                  child: Text("Delete"),
-                  onPressed: () => _showDialog(context),
-                ),
-              )
+              Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: Text("Description : ${product.description}"),
+                  )
+                ],
+              ),
             ],
           ),
         );

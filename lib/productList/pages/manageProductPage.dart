@@ -8,20 +8,23 @@ class ManageProduct extends StatelessWidget {
     return TabBar(
       tabs: <Widget>[
         Tab(
+          text: "Porduct List",
+          icon: Icon(Icons.list),
+        ),
+        Tab(
           text: "Add Product",
           icon: Icon(Icons.create),
         ),
-        Tab(
-          text: "Porduct List",
-          icon: Icon(Icons.list),
-        )
       ],
     );
   }
 
   _tabsView() {
     return TabBarView(
-      children: <Widget>[AddProduct(), ProductList()],
+      children: <Widget>[
+        ProductList(),
+        AddProduct(),
+      ],
     );
   }
 

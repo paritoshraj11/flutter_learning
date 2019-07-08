@@ -14,7 +14,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPage extends State<AuthPage> {
   Auth _auth = Auth.Login;
   final Map<String, String> _authData = {"email": "", "password": ""};
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _authFormKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
 
   void _showSnackBar(BuildContext context, String msg) {
@@ -56,10 +56,10 @@ class _AuthPage extends State<AuthPage> {
             color: Colors.white,
           )),
       onPressed: () {
-        if (!_formKey.currentState.validate()) {
+        if (!_authFormKey.currentState.validate()) {
           return;
         }
-        _formKey.currentState.save();
+        _authFormKey.currentState.save();
         if (_auth == Auth.SignUp) {
           model
               .createUser(_authData["email"], _authData["password"])
@@ -168,7 +168,7 @@ class _AuthPage extends State<AuthPage> {
             child: Container(
               width: targetWidth,
               child: Form(
-                key: _formKey,
+                key: _authFormKey,
                 child: Column(
                   children: <Widget>[
                     _emailTextField(),

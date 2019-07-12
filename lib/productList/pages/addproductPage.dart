@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:image_picker/image_picker.dart';
 import "package:scoped_model/scoped_model.dart";
-import 'package:permission_handler/permission_handler.dart';
 import "dart:async";
 import "dart:io";
 import "../../helper/ensure_visible.dart";
